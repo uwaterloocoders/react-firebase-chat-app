@@ -20,6 +20,11 @@ function App() {
 
   return (
     <div className="App">
+      <header>
+        <h1>⚛️🔥💬</h1>
+        <SignOut />
+      </header>
+
       <section>{user ? <ChatRoom /> : <SignIn />}</section>
     </div>
   );
@@ -51,6 +56,7 @@ function SignOut() {
 }
 
 function ChatRoom() {
+  const dummy = useRef();
   const messagesRef = firestore.collection("messages");
   const query = messagesRef.orderBy("createdAt").limit(25);
 
@@ -71,6 +77,7 @@ function ChatRoom() {
     });
 
     setFormValue("");
+    dummy.current.scrollIntoView({ behavior: "smooth" });
   };
 
   return (
@@ -79,6 +86,7 @@ function ChatRoom() {
         <div>
           {messages &&
             messages.map((msg) => <ChatMessage key={msg.id} message={msg} />)}
+          <div ref={dummy}></div>
         </div>
         <form onSubmit={sendMessage}>
           <input
